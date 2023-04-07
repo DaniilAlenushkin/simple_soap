@@ -19,7 +19,6 @@ if __name__ == '__main__':
     client = Client(url)
     # client.wsdl.dump()
     get_documentation(client.wsdl)
-
     print('Получение всех событий')
     events = client.service.read_all_events()
     for event in events:
@@ -34,7 +33,7 @@ if __name__ == '__main__':
     for event in events:
         print(event.id, event.name, event.participant_number)
 
-    print('\nПолучение некоторых событий событий')
+    print('\nПолучение некоторых событий')
     events = client.service.read_all_events(name='в')
     for event in events:
         print(event.id, event.name, event.participant_number)
@@ -63,3 +62,29 @@ if __name__ == '__main__':
     events = client.service.read_all_events()
     for event in events:
         print(event.id, event.name, event.participant_number)
+
+    print('\nНекорректные случаи')
+
+    print('\nСоздание события c некорректными типами переданных данных')
+    try:
+        new_event = client.service.create_event(1, 'wew')
+    except Exception as e:
+        print(e)
+
+    print('\nПолучение несущетсвующего события по ID')
+    event = client.service.read_event(100)
+    print('Событие:', event)
+
+    print('\nОбновление несущетсвующего события по ID')
+    update_event = client.service.update_event(100, name='ОБНОВЛЕННОЕ СОБЫТИЕ', participant_number=12)
+    print('Обновлено событие:', update_event)
+
+    print('\nОбновление события с некорректными типами данных')
+    try:
+        update_event = client.service.update_event(100, name=1, participant_number="zero")
+    except Exception as e:
+        print(e)
+
+    print('\nУдаление несущетсвующего события по ID')
+    delete_id = client.service.delete_event(100)
+    print('Удалено событие с ID', delete_id)

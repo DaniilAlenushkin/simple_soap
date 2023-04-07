@@ -44,7 +44,7 @@ class EventService(ServiceBase):
         for event in events:
             if event.id == id:
                 return event
-        raise ValueError('Event not found')
+        return None
 
     # Получение всех событий
     @rpc(Unicode, Integer, _returns=Array(Event))
@@ -69,7 +69,7 @@ class EventService(ServiceBase):
                 if participant_number:
                     event.participant_number = participant_number
                 return event
-        raise ValueError('Event not found')
+        return None
 
     # Удаление события по ID
     @rpc(Integer, _returns=Integer)
@@ -78,7 +78,7 @@ class EventService(ServiceBase):
             if event.id == id:
                 del events[i]
                 return id
-        raise ValueError('Event not found')
+        return None
 
 
 # Создание приложения и добавление сервиса Event
